@@ -1,0 +1,33 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "e6a4a3b98646b87cf48ba0c15cca305b"
+name = "product-qr-code"
+handle = "product-qr-code-13"
+application_url = "https://aqua-sc-courtesy-subsidiary.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "thisisjustastorefortesting.myshopify.com"
+include_config_on_deploy = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://aqua-sc-courtesy-subsidiary.trycloudflare.com/auth/callback",
+  "https://aqua-sc-courtesy-subsidiary.trycloudflare.com/auth/shopify/callback",
+  "https://aqua-sc-courtesy-subsidiary.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-04"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "/webhooks"
+
+[pos]
+embedded = false
