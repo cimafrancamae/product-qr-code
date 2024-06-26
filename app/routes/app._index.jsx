@@ -13,6 +13,7 @@ import {
   Link,
   InlineStack,
   EmptyState,
+  IndexTable,
 } from "@shopify/polaris";
 import { TitleBar, useAppBridge } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
@@ -40,6 +41,28 @@ const EmptyQRCodeState = ({ onAction }) => (
     <p>Allow customers to scan codes and buy products using their phones.</p>
   </EmptyState>
 );
+
+const QRTable = ({ qrCodes }) => (
+  <IndexTable
+    resourceName={{
+      singular: "QR code",
+      plural: "QR codes",
+    }}
+    itemCount={qrCodes.length}
+    headings={[
+      { title: "Thumbnail", hidden: true },
+      { title: "Title" },
+      { title: "Product" },
+      { title: "Date created" },
+      { title: "Scans" },
+    ]}
+    selectable={false}
+    >
+      {qrCodes.map((qrCode) => (
+        <QRTableRow key={qrCode.id} qrCode={qrCode} />
+      ))}
+    </IndexTable>
+)
 
 export const action = async ({ request }) => {
   const { admin } = await authenticate.admin(request);
