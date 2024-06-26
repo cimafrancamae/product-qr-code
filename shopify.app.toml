@@ -3,7 +3,7 @@
 client_id = "e6a4a3b98646b87cf48ba0c15cca305b"
 name = "product-qr-code"
 handle = "product-qr-code-13"
-application_url = "https://mechanisms-mentioned-finder-candles.trycloudflare.com"
+application_url = "https://carter-broader-ut-designing.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://mechanisms-mentioned-finder-candles.trycloudflare.com/auth/callback",
-  "https://mechanisms-mentioned-finder-candles.trycloudflare.com/auth/shopify/callback",
-  "https://mechanisms-mentioned-finder-candles.trycloudflare.com/api/auth/callback"
+  "https://carter-broader-ut-designing.trycloudflare.com/auth/callback",
+  "https://carter-broader-ut-designing.trycloudflare.com/auth/shopify/callback",
+  "https://carter-broader-ut-designing.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

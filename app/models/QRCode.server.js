@@ -15,7 +15,7 @@ export async function getQRCode(id, graphql) {
 export async function getQRCodes(shop, graphql) {
   const qrCodes = await db.qRCode.findMany({
     where: { shop },
-    orderBy: { id: desc },
+    orderBy: { id: "desc" },
   });
 
   if (qrCodes.length === 0) return [];
