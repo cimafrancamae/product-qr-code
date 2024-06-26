@@ -1,4 +1,4 @@
-import invariant from "tiny-invariant";
+import invariant from 'tiny-invariant';
 
 import db from "../db.server"
 import { redirect } from "react-router";

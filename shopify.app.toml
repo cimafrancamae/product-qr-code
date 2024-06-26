@@ -3,7 +3,7 @@
 client_id = "e6a4a3b98646b87cf48ba0c15cca305b"
 name = "product-qr-code"
 handle = "product-qr-code-13"
-application_url = "https://aqua-sc-courtesy-subsidiary.trycloudflare.com"
+application_url = "https://mechanisms-mentioned-finder-candles.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://aqua-sc-courtesy-subsidiary.trycloudflare.com/auth/callback",
-  "https://aqua-sc-courtesy-subsidiary.trycloudflare.com/auth/shopify/callback",
-  "https://aqua-sc-courtesy-subsidiary.trycloudflare.com/api/auth/callback"
+  "https://mechanisms-mentioned-finder-candles.trycloudflare.com/auth/callback",
+  "https://mechanisms-mentioned-finder-candles.trycloudflare.com/auth/shopify/callback",
+  "https://mechanisms-mentioned-finder-candles.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
