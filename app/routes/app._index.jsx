@@ -1,26 +1,20 @@
-import { useEffect } from "react";
 import { json } from "@remix-run/node";
-import { useActionData, useNavigation, useSubmit } from "@remix-run/react";
+import { useLoaderData, Link, useNavigate } from "@remix-run/react";
+import { authenticate } from "../shopify.server";
 import {
-  Page,
-  Layout,
-  Text,
   Card,
-  Button,
-  BlockStack,
-  Box,
-  List,
-  Link,
-  InlineStack,
   EmptyState,
+  Layout,
+  Page,
   IndexTable,
   Thumbnail,
+  Text,
   Icon,
+  InlineStack,
 } from "@shopify/polaris";
-import { TitleBar, useAppBridge } from "@shopify/app-bridge-react";
-import { authenticate } from "../shopify.server";
+
 import { getQRCodes } from "../models/QRCode.server";
-import { truncate } from "fs";
+import { AlertDiamondIcon, ImageIcon } from "@shopify/polaris-icons";
 
 export async function loader({ request }) {
   const { admin, session } = await authenticate.admin(request);
@@ -36,14 +30,19 @@ const EmptyQRCodeState = ({ onAction }) => (
     heading="Create unique QR codes for your product"
     action={{
       content: "Create QR code",
-      onAction
+      onAction,
     }}
-
     image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
   >
     <p>Allow customers to scan codes and buy products using their phones.</p>
   </EmptyState>
 );
+
+function truncate(str, { length = 25 } = {}) {
+  if (!str) return "";
+  if (str.length <= length) return str;
+  return str.slice(0, length) + "…";
+}
 
 const QRTable = ({ qrCodes }) => (
   <IndexTable
@@ -60,12 +59,12 @@ const QRTable = ({ qrCodes }) => (
       { title: "Scans" },
     ]}
     selectable={false}
-    >
-      {qrCodes.map((qrCode) => (
-        <QRTableRow key={qrCode.id} qrCode={qrCode} />
-      ))}
-    </IndexTable>
-)
+  >
+    {qrCodes.map((qrCode) => (
+      <QRTableRow key={qrCode.id} qrCode={qrCode} />
+    ))}
+  </IndexTable>
+);
 
 const QRTableRow = ({ qrCode }) => (
   <IndexTable.Row id={qrCode.id} position={qrCode.id}>
@@ -98,93 +97,11 @@ const QRTableRow = ({ qrCode }) => (
     </IndexTable.Cell>
     <IndexTable.Cell>{qrCode.scans}</IndexTable.Cell>
   </IndexTable.Row>
-)
-
-export const action = async ({ request }) => {
-  const { admin } = await authenticate.admin(request);
-  const color = ["Red", "Orange", "Yellow", "Green"][
-    Math.floor(Math.random() * 4)
-  ];
-  const response = await admin.graphql(
-    `#graphql
-      mutation populateProduct($input: ProductInput!) {
-        productCreate(input: $input) {
-          product {
-            id
-            title
-            handle
-            status
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  price
-                  barcode
-                  createdAt
-                }
-              }
-            }
-          }
-        }
-      }`,
-    {
-      variables: {
-        input: {
-          title: `${color} Snowboard`,
-        },
-      },
-    },
-  );
-  const responseJson = await response.json();
-  const variantId =
-    responseJson.data.productCreate.product.variants.edges[0].node.id;
-  const variantResponse = await admin.graphql(
-    `#graphql
-      mutation shopifyRemixTemplateUpdateVariant($input: ProductVariantInput!) {
-        productVariantUpdate(input: $input) {
-          productVariant {
-            id
-            price
-            barcode
-            createdAt
-          }
-        }
-      }`,
-    {
-      variables: {
-        input: {
-          id: variantId,
-          price: Math.random() * 100,
-        },
-      },
-    },
-  );
-  const variantResponseJson = await variantResponse.json();
-
-  return json({
-    product: responseJson.data.productCreate.product,
-    variant: variantResponseJson.data.productVariantUpdate.productVariant,
-  });
-};
+);
 
 export default function Index() {
-  const nav = useNavigation();
-  const actionData = useActionData();
-  const submit = useSubmit();
-  const shopify = useAppBridge();
-  const isLoading =
-    ["loading", "submitting"].includes(nav.state) && nav.formMethod === "POST";
-  const productId = actionData?.product?.id.replace(
-    "gid://shopify/Product/",
-    "",
-  );
-
-  useEffect(() => {
-    if (productId) {
-      shopify.toast.show("Product created");
-    }
-  }, [productId, shopify]);
-  const generateProduct = () => submit({}, { replace: true, method: "POST" });
+  const { qrCodes } = useLoaderData();
+  const navigate = useNavigate();
 
   return (
     <Page>
