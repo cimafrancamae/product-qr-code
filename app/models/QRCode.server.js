@@ -6,7 +6,7 @@ export async function getQRCode(id, graphql) {
   const qrCode = await db.qRCode.findFirst({ where: { id } });
 
   if (!qrCode) {
-      return null;
+    return null;
   }
 
   return supplementQRCode(qrCode, graphql);
@@ -73,7 +73,7 @@ async function supplementQRCode(qrCode, graphql) {
     ...qrCode,
     productDeleted: !product?.title,
     productTitle: product?.title,
-    productImage: product?.image?.nodes[0]?.url,
+    productImage: product?.images?.nodes[0]?.url,
     productAlt: product?.images?.nodes[0]?.altText,
     destinationUrl: getDestinationUrl(qrCode),
     image: await qrCodeImagePromise,
