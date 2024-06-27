@@ -1,14 +1,14 @@
+import { json } from "@remix-run/node";
 import invariant from "tiny-invariant";
+import { useLoaderData } from "@remix-run/react";
 
-import db from "../db.server"
-import { json } from "stream/consumers";
+import db from "../db.server";
 import { getQRCodeImage } from "../models/QRCode.server";
-import { useLoaderData } from "react-router";
 
 export const loader = async ({ params }) => {
   invariant(params.id, "Could not find QR code destination");
 
-  const id = Number(params.id)
+  const id = Number(params.id);
   const qrCode = await db.qRCode.findFirst({ where: { id } });
 
   invariant(qrCode, "Could not find QR code destination");
@@ -27,5 +27,5 @@ export default function QRCode() {
       <h1>{title}</h1>
       <img src={image} alt={`QR Code for product`} />
     </>
-  )
+  );
 }
